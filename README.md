@@ -1,74 +1,100 @@
-# Heimdall — AI Prompt Library
+# Heimdall — curated system prompt library
 
-> **Norse Mythology: Watchman of the Gods** | System prompt management and optimization
+[![PyPI](https://img.shields.io/badge/pypi-heimdall--prompts-blue)](https://pypi.org/project/heimdall-prompts/)
+[![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-[![GitHub Pages](https://img.shields.io/badge/Live_Demo-Visit_Site-blue?style=for-the-badge)](https://MukundaKatta.github.io/heimdall/)
-[![GitHub](https://img.shields.io/github/license/MukundaKatta/heimdall?style=flat-square)](LICENSE)
+> Norse mythology: Heimdall watches from the gateway of the gods. Here: a small Python library + CLI for managing, searching, and analyzing AI system prompts. Ships with 10 opinionated starter prompts.
 
-## Overview
+## Install
 
-Heimdall is a curated collection of AI system prompts — an educational resource for prompt engineering. It provides a prompt library with search, categorization, analysis, and optimization tools.
+```bash
+pip install heimdall-prompts
+```
 
-**Tech Stack:** Python 3.9+, no external dependencies
+## CLI
 
-## Features
+```bash
+heimdall list                          # show all prompts (built-in + local)
+heimdall list --category coding
+heimdall list --tag tdd
 
-- **Prompt Library** — store, search, filter, and compare system prompts
-- **Prompt Analyzer** — measure instruction density, specificity, structure, and readability
-- **Template Engine** — reusable prompt skeletons with variable substitution (system prompt, few-shot, chain-of-thought, role-play)
-- **Prompt Optimizer** — actionable suggestions to improve clarity and reduce token count
+heimdall show code-review-thorough     # metadata + content
+heimdall show code-review-thorough --content-only   # just the prompt body
 
-## Quick Start
+heimdall search TDD                    # fuzzy search
+
+heimdall analyze code-review-thorough  # quality stats (density, structure, readability)
+
+heimdall categories                    # list categories with counts
+```
+
+## Library
 
 ```python
 from heimdall import SystemPrompt, PromptLibrary, PromptAnalyzer
 
-# Build a library
 lib = PromptLibrary()
 lib.add(SystemPrompt(
-    name="Python Expert",
-    content="You are a senior Python developer. Always use type hints.",
+    name="my-reviewer",
+    content="You are a senior engineer...",
     category="coding",
-    tags=["python", "engineering"],
+    tags=["review"],
 ))
 
-# Search and analyze
-results = lib.search("python")
-analyzer = PromptAnalyzer()
-report = analyzer.analyze(results[0])
+# Search, filter, analyze
+results = lib.search("review")
+print(PromptAnalyzer().analyze(lib.get("my-reviewer")))
 ```
 
-## Project Structure
+## Starter prompts
 
-```
-heimdall/
-├── src/heimdall/
-│   ├── __init__.py
-│   ├── core.py          # SystemPrompt, PromptLibrary, PromptAnalyzer
-│   ├── templates.py     # PromptTemplate, TemplateEngine, built-ins
-│   └── optimizer.py     # PromptOptimizer, OptimizationReport
-├── tests/
-│   ├── test_core.py
-│   ├── test_templates.py
-│   └── test_optimizer.py
-├── pyproject.toml
-└── README.md
+Ships with 10 opinionated system prompts:
+
+| Category | Prompt |
+|---|---|
+| coding | `code-review-thorough`, `bug-repro-minimizer`, `tdd-strict` |
+| writing | `api-doc-generator`, `pr-description-writer`, `terse-explainer` |
+| analysis | `research-synthesizer` |
+| thinking | `rubber-duck`, `devil-advocate` |
+| career | `interview-star-coach` |
+
+Each is deliberate about what *not* to include (no hedging, no history-dumping, no empty praise). Read them in `src/heimdall/data/starter_prompts.json`.
+
+## Adding your own prompts
+
+Drop JSON files in `~/.heimdall/` (or set `HEIMDALL_DIR=/path/to/prompts`). Each file can be a single prompt object or an array. Schema:
+
+```json
+[
+  {
+    "name": "my-prompt",
+    "content": "You are...",
+    "category": "coding",
+    "tags": ["example"],
+    "model_target": "claude"
+  }
+]
 ```
 
-## Running Tests
+`heimdall list` picks them up automatically.
+
+## What Heimdall isn't
+
+- Not a prompt-engineering framework. No chains, no templates-of-templates.
+- Not an LLM wrapper. The prompts are text — you send them wherever.
+- Not opinionated about *which* LLM. `model_target` is metadata, not enforcement.
+
+## Development
 
 ```bash
-PYTHONPATH=src python3 -m pytest tests/ -v
+git clone https://github.com/MukundaKatta/heimdall.git
+cd heimdall
+python -m venv .venv && source .venv/bin/activate
+pip install -e '.[dev]'
+pytest
+heimdall list
 ```
-
-## Live Demo
-
-Visit the landing page: **https://MukundaKatta.github.io/heimdall/**
 
 ## License
 
-MIT License — Officethree Technologies
-
-## Part of the Mythological Portfolio
-
-This is project **#heimdall** in the [100-project Mythological Portfolio](https://github.com/MukundaKatta) by Officethree Technologies.
+MIT
