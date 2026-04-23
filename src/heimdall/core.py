@@ -7,7 +7,6 @@ and PromptAnalyzer for evaluating prompt quality.
 from __future__ import annotations
 
 import re
-import math
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Tuple
 
@@ -167,7 +166,6 @@ class PromptLibrary:
 
         shared = set(t.lower() for t in a.tags) & set(t.lower() for t in b.tags)
         len_max = max(len(a.content), len(b.content), 1)
-        len_min = max(len(a.content), len(b.content), 1)
 
         return {
             "prompt_a": a.name,

@@ -5,7 +5,6 @@ from heimdall.templates import (
     PromptTemplate,
     TemplateEngine,
     create_default_engine,
-    BUILTIN_TEMPLATES,
 )
 
 

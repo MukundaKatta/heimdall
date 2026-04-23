@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import List, Dict
+from typing import List
 
 from heimdall.core import SystemPrompt, PromptAnalyzer
 
