@@ -1,6 +1,5 @@
 """Tests for heimdall.optimizer — PromptOptimizer, OptimizationReport."""
 
-import pytest
 from heimdall.core import SystemPrompt
 from heimdall.optimizer import PromptOptimizer, OptimizationReport
 
